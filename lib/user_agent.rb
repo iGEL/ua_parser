@@ -8,7 +8,11 @@ class UserAgent
     @known = false
     @bot = false
     @feed_reader = false
+    @other = false
     @name = "Unknown browser"
+    @urls = []
+    @emails = []
+    @harmful = false
 
     if @ua_string == ""
       @name = "No user agent given"
@@ -19,33 +23,69 @@ class UserAgent
     distry_part = nil
     after_part = nil
 
-    # Flock and some versions of the Netscape Navigator try to identify themself
-    # also as a Firefox, so we have to identify them first.
-    [:flock, :navigator].each do |browser|
-      match = /mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]* firefox\/[^ ]+ #{browser}\/([^ ]+)(.*)/.match(@ua_string)
+    # First we identify bots
+    [:googlebot, :"yahoo! slurp"].each do |bot|
+      match = /mozilla\/5.0 \(compatible; #{bot}(\/([^)]+))?; \+?(http:\/\/[^)]+)\)/.match(@ua_string)
       if !@known && match
         @known = true
-        @name = browser
-        @render_engine = :gecko
-        inner_part = match[1]
-        @render_engine_version = match[2]
-        @version = match[3]
-        after_part = match[4]
+        @name = bot
+        @bot = true
+        @urls << match[3]
+        @version = match[2]
       end
     end
 
-    # Identify all other gecko based browsers except the orginal mozilla
-    [:bonecho, :camino, :epiphany, :firefox, :granparadiso, :iceweasel, :"k-meleon", :minefield, :netscape, :phoenix, :seamonkey, :songbird, :thunderbird].each do |browser|
-      match = /mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]*( [^ ]+)?( \([^)]+\))? #{browser}\/([^ ]+)(.*)/.match(@ua_string)
-      if !@known && match
-        @known = true
-        @name = browser
-        @render_engine = :gecko
-        inner_part = match[1]
-        @render_engine_version = match[2]
-        distry_part = match[3]
-        @version = match[5]
-        after_part = match[6]
+    unless @known
+      [:msnbot, :"msnbot-media", :baiduspider].each do |bot|
+        match = /#{bot}(\/([^+ ]+))?[ +]\(\+(http:\/\/[^)]+)\)/.match(@ua_string)
+        if !@known && match
+          @known = true
+          @name = bot
+          @bot = true
+          @urls << match[3]
+          @version = match[2]
+        end
+      end
+    end
+
+    unless @known
+
+    end
+
+    unless @known
+      # Flock and some versions of the Netscape Navigator try to identify themself
+      # also as a Firefox, so we have to identify them first.
+      [:flock, :navigator].each do |browser|
+        match = /mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]* firefox\/[^ ]+ #{browser}\/([^ ]+)(.*)/.match(@ua_string)
+        if !@known && match
+          @known = true
+          @name = browser
+          @render_engine = :gecko
+          inner_part = match[1]
+          @render_engine_version = match[2]
+          @version = match[3]
+          after_part = match[4]
+        end
+      end
+    end
+
+    unless @known
+      # Identify all other gecko based browsers except the orginal mozilla
+      [:bonecho, :camino, :epiphany, :firefox, :granparadiso, :iceweasel,
+        :"k-meleon", :minefield, :netscape, :netscape6, :phoenix, :seamonkey,
+        :songbird, :thunderbird].each do |browser|
+        match = /mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]*( [^ ]+)?( \([^)]+\))? #{browser}\/([^ ]+)(.*)/.match(@ua_string)
+        if !@known && match
+          @known = true
+          @name = browser
+          @name = :netscape if @name == :netscape6
+          @render_engine = :gecko
+          inner_part = match[1]
+          @render_engine_version = match[2]
+          distry_part = match[3]
+          @version = match[5]
+          after_part = match[6]
+        end
       end
     end
 
@@ -69,12 +109,26 @@ class UserAgent
   # Completely unknown user agents are also suspected browsers. Check known?, if
   # you want to make sure the browser is known.
   def browser?
-    !@bot && !@feed_reader
+    !@bot && !@feed_reader && !@other
   end
 
   # Returns the complete user agent version, as given by the user agent
   def complete_version
     @version
+  end
+
+  # Some bots provide on or more contact email addresses. This method will
+  # return the first identified address as a String or nil, if no address could
+  # be identified.
+  def email
+    @emails.first
+  end
+
+  # Some bots provide one or more contact email addresses. This method will 
+  # return all identified addresses as an Array. It'll empty, if no addresses
+  # could be identified
+  def emails
+    @emails
   end
 
   # Returns true, if the given user agent is suspected or known to be a feed
@@ -113,6 +167,12 @@ class UserAgent
     raise NotImplementedError
   end
 
+  # Returns true, if the user agent is neighter a browser, bot or feed reader.
+  # Examples: SVN Client, Apache-Browser
+  def other?
+    @other
+  end
+
   # Returns the name of the render engine as a string if known, otherwise nil.
   def render_engine
     @render_engine
@@ -135,6 +195,18 @@ class UserAgent
   def ui_lang_country
     raise NotImplementedError
   end
+  
+  # Some bots provide on or more urls. This method will return the first 
+  # identified url as a String or nil, if no url could be identified.
+  def url
+    @urls.first
+  end
+
+  # Some bots provide one or more urls. This method will return all identified
+  # urls as an Array. It'll empty, if no urls could be identified.
+  def urls
+    @urls
+  end
 
   # Returns the vendor of the user agent, if known. Otherwise nil will be
   # returned.
@@ -147,16 +219,20 @@ class UserAgent
   # the Internet Explorer 7.0 will return "7" (in contrast to Internet Explorer
   # 5.5). If the version is unknown, nil will be returned.
   def version
-    defs = {:two => {:browsers => [:flock, :firefox], :regexp => /^([0-9]+\.[0-9]+)\./}}
+    defs = {:two => {:browsers => [:bonecho, :camino, :flock, :firefox,
+          :granparadiso, :"k-meleon", :minefield, :netscape, :phoenix,
+          :seamonkey], :regexp => /^([0-9]+\.[0-9][ab]?)/}}
     defs.each_key do |key|
       if defs[key][:browsers].include?(@name)
-        return defs[key][:regexp].match(@version)[1]
+        v = defs[key][:regexp].match(@version)
+        return v[1] if v
       end
     end
 
     case @name
     when :navigator # major.minor till navigator 4.0, major afterwards
-      (@version =~ /^[0-4]/) ? /^([0-9]+\.[0-9]+)\./.match(@version)[1] : /^([0-9]+)\./.match(@version)[1]
+      return (@version =~ /^[0-4]/) ? /^([0-9]+\.[0-9]+)\./.match(@version)[1] : /^([0-9]+)\./.match(@version)[1]
     end
+    return @version
   end
 end
