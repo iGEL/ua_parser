@@ -43,7 +43,7 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal ["http://www.google.com/bot.html"], ua.urls
     assert_equal "http://www.google.com/bot.html", ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -66,7 +66,7 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal ["http://search.msn.com/msnbot.htm"], ua.urls
     assert_equal "http://search.msn.com/msnbot.htm", ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -89,7 +89,7 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal ["http://search.msn.com/msnbot.htm"], ua.urls
     assert_equal "http://search.msn.com/msnbot.htm", ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -112,7 +112,7 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal ["http://search.msn.com/msnbot.htm"], ua.urls
     assert_equal "http://search.msn.com/msnbot.htm", ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -135,7 +135,7 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal ["http://search.msn.com/msnbot.htm"], ua.urls
     assert_equal "http://search.msn.com/msnbot.htm", ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -158,7 +158,7 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal ["http://help.yahoo.com/help/us/ysearch/slurp"], ua.urls
     assert_equal "http://help.yahoo.com/help/us/ysearch/slurp", ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -181,7 +181,7 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal ["http://help.yahoo.com/help/us/ysearch/slurp"], ua.urls
     assert_equal "http://help.yahoo.com/help/us/ysearch/slurp", ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end

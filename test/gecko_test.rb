@@ -4,7 +4,7 @@ require 'test/unit'
 require 'user_agent'
 
 class GeckoTest < Test::Unit::TestCase
-  def test_bon_echo_20a3_win_vista
+  def test_bon_echo_20a3_win_xp
     ua = UserAgent.new "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1a3) Gecko/20060526 BonEcho/2.0a3"
     assert ua.known?
     assert ua.browser?
@@ -20,14 +20,14 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
     end
   end
 
-  def test_bon_echo_20a3_win_vista
+  def test_bon_echo_20a3_win_xp
     ua = UserAgent.new "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1a3) Gecko/20060526 BonEcho/2.0a3"
     assert ua.known?
     assert ua.browser?
@@ -43,7 +43,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -66,7 +66,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -89,7 +89,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -112,7 +112,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -135,7 +135,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -158,7 +158,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -181,14 +181,14 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
     end
   end
 
-  def test_firefox_305_windows
+  def test_firefox_305_win_vista
     ua = UserAgent.new "Mozilla/5.0 (Windows; U; Windows NT 6.0; pl; rv:1.9.0.5) Gecko/2008120122 Firefox/3.0.5"
     assert ua.known?
     assert ua.browser?
@@ -204,14 +204,14 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
     end
   end
 
-  def test_flock_126_windows
+  def test_flock_126_win_xp
     ua = UserAgent.new "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.17) Gecko/20080915 Firefox/2.0.0.17 Flock/1.2.6"
     assert ua.known?
     assert ua.browser?
@@ -227,7 +227,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -250,14 +250,14 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
     end
   end
 
-  def test_gran_paradiso_30a7_win_vista
+  def test_gran_paradiso_30a7_win_xp
     ua = UserAgent.new "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9a7) Gecko/2007080210 GranParadiso/3.0a7"
     assert ua.known?
     assert ua.browser?
@@ -273,7 +273,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -296,7 +296,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -319,14 +319,14 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
     end
   end
 
-  def test_minefield_31b2pre
+  def test_minefield_31b2pre_win_vista
     ua = UserAgent.new "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1b2pre) Gecko/20081011 Minefield/3.1b2pre"
     assert ua.known?
     assert ua.browser?
@@ -342,7 +342,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -365,7 +365,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -388,7 +388,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -411,7 +411,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -434,7 +434,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -457,7 +457,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end
@@ -480,7 +480,7 @@ class GeckoTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal [], ua.urls
     assert_equal nil, ua.url
-    [:architecture, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
       end

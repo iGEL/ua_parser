@@ -12,7 +12,7 @@ class UserAgent
     @name = "Unknown browser"
     @urls = []
     @emails = []
-    @harmful = false
+    @dot_net_versions = []
 
     if @ua_string == ""
       @name = "No user agent given"
@@ -24,74 +24,67 @@ class UserAgent
     after_part = nil
 
     # First we identify bots
-    [:googlebot, :"yahoo! slurp"].each do |bot|
-      match = /mozilla\/5.0 \(compatible; #{bot}(\/([^)]+))?; \+?(http:\/\/[^)]+)\)/.match(@ua_string)
+    match = /^mozilla\/5.0 \(compatible; (googlebot|yahoo! slurp)(\/([^)]+))?; \+?(http:\/\/[^)]+)\)$/.match(@ua_string)
+    if !@known && match
+      @known = true
+      @name = match[1].to_sym
+      @bot = true
+      @urls << match[4]
+      @version = match[3]
+    end
+    
+    unless @known
+      match = /^(msnbot|msnbot-media|baiduspider)(\/([^+ ]+))?[ +]\(\+(http:\/\/[^)]+)\)$/.match(@ua_string)
       if !@known && match
         @known = true
-        @name = bot
+        @name = match[1].to_sym
         @bot = true
-        @urls << match[3]
-        @version = match[2]
+        @urls << match[4]
+        @version = match[3]
       end
     end
 
     unless @known
-      [:msnbot, :"msnbot-media", :baiduspider].each do |bot|
-        match = /#{bot}(\/([^+ ]+))?[ +]\(\+(http:\/\/[^)]+)\)/.match(@ua_string)
-        if !@known && match
-          @known = true
-          @name = bot
-          @bot = true
-          @urls << match[3]
-          @version = match[2]
-        end
+      match = /^mozilla\/4.0 \(compatible; msie ([0-9]\.[0-9]); ([^)]+)\)(.*)$/.match(@ua_string)
+      if match
+        @known = true
+        @name = :internet_explorer
+        @render_engine = :trident
+        @version = match[1]
+        inner_part = match[2]
+        after_part = match[3]
       end
-    end
-
-    unless @known
-
     end
 
     unless @known
       # Flock and some versions of the Netscape Navigator try to identify themself
       # also as a Firefox, so we have to identify them first.
-      [:flock, :navigator].each do |browser|
-        match = /mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]* firefox\/[^ ]+ #{browser}\/([^ ]+)(.*)/.match(@ua_string)
-        if !@known && match
-          @known = true
-          @name = browser
-          @render_engine = :gecko
-          inner_part = match[1]
-          @render_engine_version = match[2]
-          @version = match[3]
-          after_part = match[4]
-        end
+      match = /^mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]* firefox\/[^ ]+ (flock|navigator)\/([^ ]+)(.*)$/.match(@ua_string)
+      if !@known && match
+        @known = true
+        @name = match[3].to_sym
+        @render_engine = :gecko
+        inner_part = match[1]
+        @render_engine_version = match[2]
+        @version = match[4]
+        after_part = match[5]
       end
     end
 
     unless @known
       # Identify all other gecko based browsers except the orginal mozilla
-      [:bonecho, :camino, :epiphany, :firefox, :granparadiso, :iceweasel,
-        :"k-meleon", :minefield, :netscape, :netscape6, :phoenix, :seamonkey,
-        :songbird, :thunderbird].each do |browser|
-        match = /mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]*( [^ ]+)?( \([^)]+\))? #{browser}\/([^ ]+)(.*)/.match(@ua_string)
-        if !@known && match
-          @known = true
-          @name = browser
-          @name = :netscape if @name == :netscape6
-          @render_engine = :gecko
-          inner_part = match[1]
-          @render_engine_version = match[2]
-          distry_part = match[3]
-          @version = match[5]
-          after_part = match[6]
-        end
+      match = /^mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]*( [^ ]+)?( \([^)]+\))? (bonecho|camino|epiphany|firefox|granparadiso|iceweasel|k-meleon|minefield|netscape6?|phoenix|seamonkey|songbird|thunderbird)\/([^ ]+)(.*)$/.match(@ua_string)
+      if !@known && match
+        @known = true
+        @name = match[5].to_sym
+        @name = :netscape if @name == :netscape6
+        @render_engine = :gecko
+        inner_part = match[1]
+        @render_engine_version = match[2]
+        distry_part = match[3]
+        @version = match[6]
+        after_part = match[7]
       end
-    end
-
-    if @known
-      # Identify the ua vendor
-
     end
   end
 
@@ -115,6 +108,11 @@ class UserAgent
   # Returns the complete user agent version, as given by the user agent
   def complete_version
     @version
+  end
+
+  # Returns an Array of all available .NET-Versions.
+  def dotnet_versions
+    raise NotImplementedError
   end
 
   # Some bots provide on or more contact email addresses. This method will
