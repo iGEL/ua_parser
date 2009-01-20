@@ -1,0 +1,23 @@
+== About ua_parser
+
+ua_parser will become a ruby gem to identify user agents like browsers or 
+crawlers by the provided user agent string. I'm planning try to get most of 
+the available information like GUI language of the browser or email addresses
+provided by a bot out of it.
+
+=== Project status (as of 2009-01-20):
+
+Right know, the project is at a very early state. Of my 3 million hits sample,
+ua_parser can identify just about 80 % of all hits.
+
+Known browsers:
+ * Internet Explorer
+ * Firefox and most other gecko based browsers
+ * Opera, pure and pretending to be an Internet Explorer or Firefox
+
+Known bots:
+ * Googlebot
+ * Yahoo! Slurp
+ * Baidubot
+ * msnbot and msnbot-media
+ * twiceler (of cuil.com)
