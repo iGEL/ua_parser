@@ -142,6 +142,52 @@ class CrawlerTest < Test::Unit::TestCase
     end
   end
 
+  def test_cuil_twiceler_09
+    ua = UserAgent.new "Mozilla/5.0 (Twiceler-0.9 http://www.cuil.com/twiceler/robot.html)"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :"twiceler", ua.name
+    assert_equal "0.9", ua.complete_version
+    assert_equal "0.9", ua.version
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal ["http://www.cuil.com/twiceler/robot.html"], ua.urls
+    assert_equal "http://www.cuil.com/twiceler/robot.html", ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_cuil_09_twiceler_wrong_domain
+    ua = UserAgent.new "Mozilla/5.0 (Twiceler-0.9 http://www.cuill.com/twiceler/robot.html)"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :"twiceler", ua.name
+    assert_equal "0.9", ua.complete_version
+    assert_equal "0.9", ua.version
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal ["http://www.cuill.com/twiceler/robot.html"], ua.urls
+    assert_equal "http://www.cuill.com/twiceler/robot.html", ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
   def test_yahoo_slurp
     ua = UserAgent.new "Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)"
     assert ua.known?

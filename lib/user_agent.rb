@@ -14,7 +14,7 @@ class UserAgent
     @emails = []
     @dot_net_versions = []
 
-    if @ua_string == ""
+    if @ua_string == "" || @ua_string == "-"
       @name = "No user agent given"
       return
     end
@@ -25,7 +25,7 @@ class UserAgent
 
     # First we identify bots
     match = /^mozilla\/5.0 \(compatible; (googlebot|yahoo! slurp)(\/([^)]+))?; \+?(http:\/\/[^)]+)\)$/.match(@ua_string)
-    if !@known && match
+    if match
       @known = true
       @name = match[1].to_sym
       @bot = true
@@ -34,8 +34,19 @@ class UserAgent
     end
     
     unless @known
+      match = /^mozilla\/5.0 \((twiceler)-([^ ]+) \+?(http:\/\/[^)]+)\)$/.match(@ua_string)
+      if match
+        @known = true
+        @name = match[1].to_sym
+        @bot = true
+        @urls << match[3]
+        @version = match[2]
+      end
+    end
+
+    unless @known
       match = /^(msnbot|msnbot-media|baiduspider)(\/([^+ ]+))?[ +]\(\+(http:\/\/[^)]+)\)$/.match(@ua_string)
-      if !@known && match
+      if match
         @known = true
         @name = match[1].to_sym
         @bot = true
@@ -44,6 +55,20 @@ class UserAgent
       end
     end
 
+    # Identify Operas pretending to be an Internet Explorer
+    unless @known
+      match = /^mozilla\/4\.0 \(compatible; msie [4-6].0;(.*)\) opera ([0-9]+\.[0-9]+)(.*)$/.match(@ua_string)
+      if match
+        @known = true
+        @name = :opera
+        @render_engine = :presto
+        @version = match[2]
+        inner_part = match[1]
+        after_part = match[3]
+      end
+    end
+
+    # Identify Internet Explorers
     unless @known
       match = /^mozilla\/4.0 \(compatible; msie ([0-9]\.[0-9]); ([^)]+)\)(.*)$/.match(@ua_string)
       if match
@@ -56,9 +81,22 @@ class UserAgent
       end
     end
 
+    # Identify Opera pretending to be a Firefox
     unless @known
-      # Flock and some versions of the Netscape Navigator try to identify themself
-      # also as a Firefox, so we have to identify them first.
+      match = /\Amozilla\/5.0 \((.+) rv:[0-9.]+\) gecko\/[0-9]+ firefox\/[0-9.]+ opera ([0-9]+\.[0-9]+)(.*)\Z/.match(@ua_string)
+      if match
+        @known = true
+        @name = :opera
+        @render_engine = :presto
+        @version = match[2]
+        inner_part = match[1]
+        after_part = match[3]
+      end
+    end
+
+    # Flock and some versions of the Netscape Navigator try to identify themself
+    # also as a Firefox, so we have to identify them first.
+    unless @known
       match = /^mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]* firefox\/[^ ]+ (flock|navigator)\/([^ ]+)(.*)$/.match(@ua_string)
       if !@known && match
         @known = true
@@ -71,8 +109,8 @@ class UserAgent
       end
     end
 
+    # Identify all other gecko based browsers except the orginal mozilla
     unless @known
-      # Identify all other gecko based browsers except the orginal mozilla
       match = /^mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]*( [^ ]+)?( \([^)]+\))? (bonecho|camino|epiphany|firefox|granparadiso|iceweasel|k-meleon|minefield|netscape6?|phoenix|seamonkey|songbird|thunderbird)\/([^ ]+)(.*)$/.match(@ua_string)
       if !@known && match
         @known = true
@@ -84,6 +122,20 @@ class UserAgent
         distry_part = match[3]
         @version = match[6]
         after_part = match[7]
+      end
+    end
+
+    # Identify now Operas, which do not try to pretend another browser
+    unless @known
+      match = /\Aopera\/([0-9]+\.[0-9]+) \(([^)]+)\) ?(presto\/([0-9.]+))?(.*)\Z/.match(@ua_string)
+      if match
+        @known = true
+        @name = :opera
+        @version = match[1]
+        @render_engine = :presto
+        @render_engine_version = match[4]
+        inner_part = match[2]
+        after_part = match[5]
       end
     end
   end
