@@ -1,9 +1,11 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/unit'
-require 'user_agent'
+require 'ua_parser'
 
 class PrestoTest < Test::Unit::TestCase
+  include UaParser
+  
   def test_opera_852_linux_as_ie_6
     ua = UserAgent.new "Mozilla/4.0 (compatible; MSIE 6.0; X11; Linux i686; en) Opera 8.52"
     assert ua.known?

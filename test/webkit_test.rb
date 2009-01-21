@@ -1,9 +1,11 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/unit'
-require 'user_agent'
+require 'ua_parser'
 
 class WebkitTest < Test::Unit::TestCase
+  include UaParser
+
   def test_chrome_031549_windows_7
     ua = UserAgent.new "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/0.3.154.9 Safari/525.19"
     assert ua.known?

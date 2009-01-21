@@ -1,9 +1,11 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/unit'
-require 'user_agent'
+require 'ua_parser'
 
 class CrawlerTest < Test::Unit::TestCase
+  include UaParser
+  
   def test_baiduspider
     ua = UserAgent.new "Baiduspider+(+http://www.baidu.com/search/spider.htm)"
     assert ua.known?

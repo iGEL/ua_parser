@@ -1,9 +1,11 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/unit'
-require 'user_agent'
+require 'ua_parser'
 
 class GeckoTest < Test::Unit::TestCase
+  include UaParser
+  
   def test_bon_echo_20a3_win_xp
     ua = UserAgent.new "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1a3) Gecko/20060526 BonEcho/2.0a3"
     assert ua.known?

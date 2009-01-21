@@ -1,9 +1,11 @@
 $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 
 require 'test/unit'
-require 'user_agent'
+require 'ua_parser'
 
 class TridentTest < Test::Unit::TestCase
+  include UaParser
+  
   def test_msie_60_win_2003
     ua = UserAgent.new "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322)"
     assert ua.known?

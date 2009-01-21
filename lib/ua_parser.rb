@@ -1,0 +1,1 @@
+require "ua_parser/user_agent"
