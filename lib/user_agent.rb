@@ -19,9 +19,7 @@ class UserAgent
       return
     end
 
-    inner_part = nil
-    distry_part = nil
-    after_part = nil
+    ua_info = nil
 
     # First we identify bots
     match = /^mozilla\/5.0 \(compatible; (googlebot|yahoo! slurp)(\/([^)]+))?; \+?(http:\/\/[^)]+)\)$/.match(@ua_string)
@@ -63,8 +61,7 @@ class UserAgent
         @name = :opera
         @render_engine = :presto
         @version = match[2]
-        inner_part = match[1]
-        after_part = match[3]
+        ua_info = "#{match[1]} #{match[3]}"
       end
     end
 
@@ -76,8 +73,7 @@ class UserAgent
         @name = :internet_explorer
         @render_engine = :trident
         @version = match[1]
-        inner_part = match[2]
-        after_part = match[3]
+        ua_info = "#{match[2]} #{match[3]}"
       end
     end
 
@@ -89,8 +85,7 @@ class UserAgent
         @name = :opera
         @render_engine = :presto
         @version = match[2]
-        inner_part = match[1]
-        after_part = match[3]
+        ua_info = "#{match[1]} #{match[3]}"
       end
     end
 
@@ -102,10 +97,9 @@ class UserAgent
         @known = true
         @name = match[3].to_sym
         @render_engine = :gecko
-        inner_part = match[1]
+        ua_info = "#{match[1]} #{match[5]}"
         @render_engine_version = match[2]
         @version = match[4]
-        after_part = match[5]
       end
     end
 
@@ -117,14 +111,51 @@ class UserAgent
         @name = match[5].to_sym
         @name = :netscape if @name == :netscape6
         @render_engine = :gecko
-        inner_part = match[1]
+        ua_info = "#{match[1]} #{match[3]} #{match[7]}"
         @render_engine_version = match[2]
-        distry_part = match[3]
         @version = match[6]
-        after_part = match[7]
       end
     end
 
+    # Identify Chrome
+    unless @known
+      match = /\Amozilla\/5\.0 \(([^)]+)\) applewebkit\/([0-9]+\.[0-9]+) \(khtml, like gecko\) chrome\/([0-9.]+) safari\/[0-9]+\.[0-9]+(.*)\Z/.match(@ua_string)
+      if match
+        @known = true
+        @name = :chrome
+        @render_engine = :webkit
+        @render_engine_version = match[2]
+        @version = match[3]
+        ua_info = "#{match[1]} #{match[4]}"
+      end
+    end
+
+    # Identify Safari >= bersion 3
+    unless @known
+      match = /\Amozilla\/5.0 \(([^)]+)\) applewebkit\/([^ ]+) \(khtml, like gecko\) version\/([^ ]+) safari\/[0-9]+\.[0-9]+(.*)\Z/.match(@ua_string)
+      if match
+        @known = true
+        @name = :safari
+        @render_engine = :webkit
+        @render_engine_version = match[2]
+        @version = match[3]
+        ua_info = "#{match[1]} #{match[4]}"
+      end
+    end
+=begin
+    # Identify Safari < version 3
+    unless @known
+      match = /\Amozilla\/5\.0 \((.+)\) applewebkit\/([^ ]+) \(khtml, like gecko\) safari\/([^ ]+)(.*)\Z/.match(@ua_string)
+      if match
+        @known = true
+        @name = :safari
+        @render_engine = :webkit
+        @render_engine_version = match[2]
+        @version = match[3]
+        ua_info = "#{match[1]} #{match[4]}"
+      end
+    end
+=end
     # Identify now Operas, which do not try to pretend another browser
     unless @known
       match = /\Aopera\/([0-9]+\.[0-9]+) \(([^)]+)\) ?(presto\/([0-9.]+))?(.*)\Z/.match(@ua_string)
@@ -134,8 +165,7 @@ class UserAgent
         @version = match[1]
         @render_engine = :presto
         @render_engine_version = match[4]
-        inner_part = match[2]
-        after_part = match[5]
+        ua_info = "#{match[2]} #{match[5]}"
       end
     end
   end
@@ -174,7 +204,7 @@ class UserAgent
     @emails.first
   end
 
-  # Some bots provide one or more contact email addresses. This method will 
+  # Some bots provide one or more contact email addresses. This method will
   # return all identified addresses as an Array. It'll empty, if no addresses
   # could be identified
   def emails
@@ -246,7 +276,7 @@ class UserAgent
     raise NotImplementedError
   end
   
-  # Some bots provide on or more urls. This method will return the first 
+  # Some bots provide on or more urls. This method will return the first
   # identified url as a String or nil, if no url could be identified.
   def url
     @urls.first
@@ -269,7 +299,7 @@ class UserAgent
   # the Internet Explorer 7.0 will return "7" (in contrast to Internet Explorer
   # 5.5). If the version is unknown, nil will be returned.
   def version
-    defs = {:two => {:browsers => [:bonecho, :camino, :flock, :firefox,
+    defs = {:two => {:browsers => [:bonecho, :camino, :chrome, :flock, :firefox,
           :granparadiso, :"k-meleon", :minefield, :netscape, :phoenix,
           :seamonkey], :regexp => /^([0-9]+\.[0-9][ab]?)/}}
     defs.each_key do |key|
