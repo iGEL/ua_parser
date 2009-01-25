@@ -16,8 +16,8 @@ class TridentTest < Test::Unit::TestCase
     assert_equal :trident, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :internet_explorer, ua.name
-    assert_equal "6.0", ua.complete_version
-    assert_equal "6.0", ua.version
+    assert_equal "6.0", ua.version.full
+    assert_equal "6", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -39,8 +39,8 @@ class TridentTest < Test::Unit::TestCase
     assert_equal :trident, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :internet_explorer, ua.name
-    assert_equal "6.0", ua.complete_version
-    assert_equal "6.0", ua.version
+    assert_equal "6.0", ua.version.full
+    assert_equal "6", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -62,8 +62,8 @@ class TridentTest < Test::Unit::TestCase
     assert_equal :trident, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :internet_explorer, ua.name
-    assert_equal "7.0", ua.complete_version
-    assert_equal "7.0", ua.version
+    assert_equal "7.0", ua.version.full
+    assert_equal "7", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -85,8 +85,8 @@ class TridentTest < Test::Unit::TestCase
     assert_equal :trident, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :internet_explorer, ua.name
-    assert_equal "7.0", ua.complete_version
-    assert_equal "7.0", ua.version
+    assert_equal "7.0", ua.version.full
+    assert_equal "7", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -108,8 +108,8 @@ class TridentTest < Test::Unit::TestCase
     assert_equal :trident, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :internet_explorer, ua.name
-    assert_equal "7.0", ua.complete_version
-    assert_equal "7.0", ua.version
+    assert_equal "7.0", ua.version.full
+    assert_equal "7", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -129,10 +129,10 @@ class TridentTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :trident, ua.render_engine
-    assert_equal nil, ua.render_engine_version
+    assert_equal "4.0", ua.render_engine_version.full
     assert_equal :internet_explorer, ua.name
-    assert_equal "8.0", ua.complete_version
-    assert_equal "8.0", ua.version
+    assert_equal "8.0", ua.version.full
+    assert_equal "8", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls

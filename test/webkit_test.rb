@@ -14,10 +14,10 @@ class WebkitTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :webkit, ua.render_engine
-    assert_equal "525.19", ua.render_engine_version
+    assert_equal "525.19", ua.render_engine_version.full
     assert_equal :chrome, ua.name
-    assert_equal "0.3.154.9", ua.complete_version
-    assert_equal "0.3", ua.version
+    assert_equal "0.3.154.9", ua.version.full
+    assert_equal "0.3", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -37,10 +37,10 @@ class WebkitTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :webkit, ua.render_engine
-    assert_equal "525.19", ua.render_engine_version
+    assert_equal "525.19", ua.render_engine_version.full
     assert_equal :chrome, ua.name
-    assert_equal "1.0.154.39", ua.complete_version
-    assert_equal "1.0", ua.version
+    assert_equal "1.0.154.39", ua.version.full
+    assert_equal "1.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -60,10 +60,10 @@ class WebkitTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :webkit, ua.render_engine
-    assert_equal "528.8", ua.render_engine_version
+    assert_equal "528.8", ua.render_engine_version.full
     assert_equal :chrome, ua.name
-    assert_equal "2.0.156.1", ua.complete_version
-    assert_equal "2.0", ua.version
+    assert_equal "2.0.156.1", ua.version.full
+    assert_equal "2.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -83,10 +83,10 @@ class WebkitTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :webkit, ua.render_engine
-    assert_equal "528.10", ua.render_engine_version
+    assert_equal "528.10", ua.render_engine_version.full
     assert_equal :chrome, ua.name
-    assert_equal "2.0.157.2", ua.complete_version
-    assert_equal "2.0", ua.version
+    assert_equal "2.0.157.2", ua.version.full
+    assert_equal "2.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -107,10 +107,10 @@ class WebkitTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :webkit, ua.render_engine
-    assert_equal "312.6", ua.render_engine_version
+    assert_equal "312.6", ua.render_engine_version.full
     assert_equal :safari, ua.name
-    assert_equal "1.3.2", ua.complete_version
-    assert_equal "1.3", ua.version
+    assert_equal "1.3.2", ua.version.full
+    assert_equal "1.3", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -130,10 +130,10 @@ class WebkitTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :webkit, ua.render_engine
-    assert_equal "412.5", ua.render_engine_version
+    assert_equal "412.5", ua.render_engine_version.full
     assert_equal :safari, ua.name
-    assert_equal "2.0.2", ua.complete_version
-    assert_equal "2.0", ua.version
+    assert_equal "2.0.2", ua.version.full
+    assert_equal "2.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -154,10 +154,11 @@ class WebkitTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :webkit, ua.render_engine
-    assert_equal "525.26.2", ua.render_engine_version
+    assert_equal "525.26.2", ua.render_engine_version.full
+    assert_equal "525.26", ua.render_engine_version.major
     assert_equal :safari, ua.name
-    assert_equal "3.2", ua.complete_version
-    assert_equal "3.2", ua.version
+    assert_equal "3.2", ua.version.full
+    assert_equal "3.2", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -177,10 +178,10 @@ class WebkitTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :webkit, ua.render_engine
-    assert_equal "525.26.2", ua.render_engine_version
+    assert_equal "525.26.2", ua.render_engine_version.full
     assert_equal :safari, ua.name
-    assert_equal "3.2", ua.complete_version
-    assert_equal "3.2", ua.version
+    assert_equal "3.2", ua.version.full
+    assert_equal "3.2", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -200,10 +201,11 @@ class WebkitTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :webkit, ua.render_engine
-    assert_equal "528.4+", ua.render_engine_version
+    assert_equal "528.4+", ua.render_engine_version.full
+    assert_equal "528.4+", ua.render_engine_version.major
     assert_equal :safari, ua.name
-    assert_equal "4.0", ua.complete_version
-    assert_equal "4.0", ua.version
+    assert_equal "4.0", ua.version.full
+    assert_equal "4.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -223,10 +225,10 @@ class WebkitTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :webkit, ua.render_engine
-    assert_equal "528.10+", ua.render_engine_version
+    assert_equal "528.10+", ua.render_engine_version.full
     assert_equal :safari, ua.name
-    assert_equal "4.0dp1", ua.complete_version
-    assert_equal "4.0dp1", ua.version
+    assert_equal "4.0dp1", ua.version.full
+    assert_equal "4.0dp", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls

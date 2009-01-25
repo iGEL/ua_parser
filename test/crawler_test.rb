@@ -16,7 +16,6 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :baiduspider, ua.name
-    assert_equal nil, ua.complete_version
     assert_equal nil, ua.version
     assert_equal [], ua.emails
     assert_equal nil, ua.email
@@ -39,8 +38,8 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :googlebot, ua.name
-    assert_equal "2.1", ua.complete_version
-    assert_equal "2.1", ua.version
+    assert_equal "2.1", ua.version.full
+    assert_equal "2.1", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal ["http://www.google.com/bot.html"], ua.urls
@@ -62,8 +61,8 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :msnbot, ua.name
-    assert_equal "1.0", ua.complete_version
-    assert_equal "1.0", ua.version
+    assert_equal "1.0", ua.version.full
+    assert_equal "1.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal ["http://search.msn.com/msnbot.htm"], ua.urls
@@ -85,8 +84,8 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :msnbot, ua.name
-    assert_equal "1.1", ua.complete_version
-    assert_equal "1.1", ua.version
+    assert_equal "1.1", ua.version.full
+    assert_equal "1.1", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal ["http://search.msn.com/msnbot.htm"], ua.urls
@@ -108,8 +107,8 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :"msnbot-media", ua.name
-    assert_equal "1.0", ua.complete_version
-    assert_equal "1.0", ua.version
+    assert_equal "1.0", ua.version.full
+    assert_equal "1.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal ["http://search.msn.com/msnbot.htm"], ua.urls
@@ -131,8 +130,8 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :"msnbot-media", ua.name
-    assert_equal "1.1", ua.complete_version
-    assert_equal "1.1", ua.version
+    assert_equal "1.1", ua.version.major
+    assert_equal "1.1", ua.version.full
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal ["http://search.msn.com/msnbot.htm"], ua.urls
@@ -154,8 +153,8 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :"twiceler", ua.name
-    assert_equal "0.9", ua.complete_version
-    assert_equal "0.9", ua.version
+    assert_equal "0.9", ua.version.full
+    assert_equal "0.9", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal ["http://www.cuil.com/twiceler/robot.html"], ua.urls
@@ -177,8 +176,8 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :"twiceler", ua.name
-    assert_equal "0.9", ua.complete_version
-    assert_equal "0.9", ua.version
+    assert_equal "0.9", ua.version.major
+    assert_equal "0.9", ua.version.full
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal ["http://www.cuill.com/twiceler/robot.html"], ua.urls
@@ -200,7 +199,6 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :"yahoo! slurp", ua.name
-    assert_equal nil, ua.complete_version
     assert_equal nil, ua.version
     assert_equal [], ua.emails
     assert_equal nil, ua.email
@@ -223,8 +221,8 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :"yahoo! slurp", ua.name
-    assert_equal "3.0", ua.complete_version
-    assert_equal "3.0", ua.version
+    assert_equal "3.0", ua.version.full
+    assert_equal "3.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal ["http://help.yahoo.com/help/us/ysearch/slurp"], ua.urls

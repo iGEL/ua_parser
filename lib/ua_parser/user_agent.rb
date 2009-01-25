@@ -20,7 +20,7 @@ module UaParser
         return
       end
 
-      ua_info = nil
+      ua_info = []
 
       # First we identify bots
       match = /^mozilla\/5.0 \(compatible; (googlebot|yahoo! slurp)(\/([^)]+))?; \+?(http:\/\/[^)]+)\)$/.match(@ua_string)
@@ -62,7 +62,7 @@ module UaParser
           @name = :opera
           @render_engine = :presto
           @version = match[2]
-          ua_info = "#{match[1]} #{match[3]}"
+          ua_info = match[1].split(/;\s?/) + match[3].split(/\s/)
         end
       end
 
@@ -74,7 +74,7 @@ module UaParser
           @name = :internet_explorer
           @render_engine = :trident
           @version = match[1]
-          ua_info = "#{match[2]} #{match[3]}"
+          ua_info = match[2].split(/;\s?/) + match[3].split(/\s/)
         end
       end
 
@@ -86,7 +86,7 @@ module UaParser
           @name = :opera
           @render_engine = :presto
           @version = match[2]
-          ua_info = "#{match[1]} #{match[3]}"
+          ua_info = match[1].split(/;\s?/) + match[3].split(/\s/)
         end
       end
 
@@ -98,7 +98,7 @@ module UaParser
           @known = true
           @name = match[3].to_sym
           @render_engine = :gecko
-          ua_info = "#{match[1]} #{match[5]}"
+          ua_info = match[1].split(/;\s?/) + match[5].split(/\s/)
           @render_engine_version = match[2]
           @version = match[4]
         end
@@ -112,7 +112,7 @@ module UaParser
           @name = match[5].to_sym
           @name = :netscape if @name == :netscape6
           @render_engine = :gecko
-          ua_info = "#{match[1]} #{match[3]} #{match[7]}"
+          ua_info = match[1].split(/;\s?/) + "#{match[3]} #{match[7]}".split(/\s/)
           @render_engine_version = match[2]
           @version = match[6]
         end
@@ -127,7 +127,7 @@ module UaParser
           @render_engine = :webkit
           @render_engine_version = match[2]
           @version = match[3]
-          ua_info = "#{match[1]} #{match[4]}"
+          ua_info = match[1].split(/;\s?/) + match[4].split(/\s/)
         end
       end
 
@@ -140,7 +140,7 @@ module UaParser
           @render_engine = :webkit
           @render_engine_version = match[2]
           @version = match[3]
-          ua_info = "#{match[1]} #{match[4]}"
+          ua_info = match[1].split(/;\s?/) + match[4].split(/\s/)
         end
       end
 =begin
@@ -166,7 +166,16 @@ module UaParser
           @version = match[1]
           @render_engine = :presto
           @render_engine_version = match[4]
-          ua_info = "#{match[2]} #{match[5]}"
+          ua_info = match[2].split(/;\s?/) + match[5].split(/\s/)
+        end
+      end
+
+      if @known && !ua_info.empty?
+        if @render_engine == :trident
+          ua_info.each do |info|
+            match = /trident\/(.+)/.match(info)
+            @render_engine_version = match[1] if match
+          end
         end
       end
     end
@@ -186,11 +195,6 @@ module UaParser
     # you want to make sure the browser is known.
     def browser?
       !@bot && !@feed_reader && !@other
-    end
-
-    # Returns the complete user agent version, as given by the user agent
-    def complete_version
-      @version
     end
 
     # Returns an Array of all available .NET-Versions.
@@ -259,9 +263,12 @@ module UaParser
       @render_engine
     end
 
-    # Returns the version of the render engine if known, otherwise nil
+    # Returns a UaParser::Version object with the version of the render engine
+    # if known, otherwise nil
     def render_engine_version
-      @render_engine_version
+      return nil if @render_engine_version.nil?
+      @render_engine_version_object = Version.new(@render_engine_version, @render_engine) if @render_engine_version_object.nil?
+      @render_engine_version_object
     end
 
     # Returns the user interface language as a symbol like :en or :de. Returns nil
@@ -295,26 +302,11 @@ module UaParser
       raise NotImplementedError
     end
 
-    # Returns the major version of the user agent as a String, as it is commonly
-    # known. For example, for the Firefox 3.0.5 "3.0" will be returned, but for
-    # the Internet Explorer 7.0 will return "7" (in contrast to Internet Explorer
-    # 5.5). If the version is unknown, nil will be returned.
+    # Returns a UaAgent::Version object with the Version number
     def version
-      defs = {:two => {:browsers => [:bonecho, :camino, :chrome, :flock, :firefox,
-            :granparadiso, :"k-meleon", :minefield, :netscape, :phoenix,
-            :seamonkey], :regexp => /^([0-9]+\.[0-9][ab]?)/}}
-      defs.each_key do |key|
-        if defs[key][:browsers].include?(@name)
-          v = defs[key][:regexp].match(@version)
-          return v[1] if v
-        end
-      end
-
-      case @name
-      when :navigator # major.minor till navigator 4.0, major afterwards
-        return (@version =~ /^[0-4]/) ? /^([0-9]+\.[0-9]+)\./.match(@version)[1] : /^([0-9]+)\./.match(@version)[1]
-      end
-      return @version
+      return nil if @version.nil?
+      @version_object = Version.new(@version, @name) if @version_object.nil?
+      @version_object
     end
   end
 end

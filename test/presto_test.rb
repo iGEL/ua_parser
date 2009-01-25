@@ -16,8 +16,8 @@ class PrestoTest < Test::Unit::TestCase
     assert_equal :presto, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :opera, ua.name
-    assert_equal "8.52", ua.complete_version
-    assert_equal "8.52", ua.version
+    assert_equal "8.52", ua.version.full
+    assert_equal "8.5", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -39,8 +39,8 @@ class PrestoTest < Test::Unit::TestCase
     assert_equal :presto, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :opera, ua.name
-    assert_equal "8.54", ua.complete_version
-    assert_equal "8.54", ua.version
+    assert_equal "8.54", ua.version.full
+    assert_equal "8.5", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -62,8 +62,8 @@ class PrestoTest < Test::Unit::TestCase
     assert_equal :presto, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :opera, ua.name
-    assert_equal "9.23", ua.complete_version
-    assert_equal "9.23", ua.version
+    assert_equal "9.23", ua.version.full
+    assert_equal "9.2", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -83,10 +83,10 @@ class PrestoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :presto, ua.render_engine
-    assert_equal "2.1.1", ua.render_engine_version
+    assert_equal "2.1.1", ua.render_engine_version.full
     assert_equal :opera, ua.name
-    assert_equal "9.63", ua.complete_version
-    assert_equal "9.63", ua.version
+    assert_equal "9.63", ua.version.full
+    assert_equal "9.6", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -108,8 +108,8 @@ class PrestoTest < Test::Unit::TestCase
     assert_equal :presto, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :opera, ua.name
-    assert_equal "9.63", ua.complete_version
-    assert_equal "9.63", ua.version
+    assert_equal "9.63", ua.version.full
+    assert_equal "9.6", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -129,10 +129,10 @@ class PrestoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :presto, ua.render_engine
-    assert_equal "2.1.1", ua.render_engine_version
+    assert_equal "2.1.1", ua.render_engine_version.full
     assert_equal :opera, ua.name
-    assert_equal "9.63", ua.complete_version
-    assert_equal "9.63", ua.version
+    assert_equal "9.63", ua.version.full
+    assert_equal "9.6", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -154,8 +154,8 @@ class PrestoTest < Test::Unit::TestCase
     assert_equal :presto, ua.render_engine
     assert_equal nil, ua.render_engine_version
     assert_equal :opera, ua.name
-    assert_equal "9.63", ua.complete_version
-    assert_equal "9.63", ua.version
+    assert_equal "9.63", ua.version.full
+    assert_equal "9.6", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls

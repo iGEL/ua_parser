@@ -14,10 +14,11 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.8.1a3", ua.render_engine_version
+    assert_equal "1.8.1a3", ua.render_engine_version.full
+    assert_equal "1.8", ua.render_engine_version.major
     assert_equal :bonecho, ua.name
-    assert_equal "2.0a3", ua.complete_version
-    assert_equal "2.0a", ua.version
+    assert_equal "2.0a3", ua.version.full
+    assert_equal "2.0a", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -37,10 +38,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.8.1a3", ua.render_engine_version
+    assert_equal "1.8.1a3", ua.render_engine_version.full
     assert_equal :bonecho, ua.name
-    assert_equal "2.0a3", ua.complete_version
-    assert_equal "2.0a", ua.version
+    assert_equal "2.0a3", ua.version.full
+    assert_equal "2.0a", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -60,10 +61,11 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.8.1.12", ua.render_engine_version
+    assert_equal "1.8.1.12", ua.render_engine_version.full
+    assert_equal "1.8", ua.render_engine_version.major
     assert_equal :camino, ua.name
-    assert_equal "1.5.5", ua.complete_version
-    assert_equal "1.5", ua.version
+    assert_equal "1.5.5", ua.version.full
+    assert_equal "1.5", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -83,10 +85,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.8.1.6", ua.render_engine_version
+    assert_equal "1.8.1.6", ua.render_engine_version.full
     assert_equal :firefox, ua.name
-    assert_equal "2.0.0.6", ua.complete_version
-    assert_equal "2.0", ua.version
+    assert_equal "2.0.0.6", ua.version.full
+    assert_equal "2.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -106,10 +108,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.9", ua.render_engine_version
+    assert_equal "1.9", ua.render_engine_version.full
     assert_equal :firefox, ua.name
-    assert_equal "3.0.2", ua.complete_version
-    assert_equal "3.0", ua.version
+    assert_equal "3.0.2", ua.version.full
+    assert_equal "3.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -129,10 +131,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.9.0.5", ua.render_engine_version
+    assert_equal "1.9.0.5", ua.render_engine_version.full
     assert_equal :firefox, ua.name
-    assert_equal "3.0.5", ua.complete_version
-    assert_equal "3.0", ua.version
+    assert_equal "3.0.5", ua.version.full
+    assert_equal "3.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -152,10 +154,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.9.0.5", ua.render_engine_version
+    assert_equal "1.9.0.5", ua.render_engine_version.full
     assert_equal :firefox, ua.name
-    assert_equal "3.0.5", ua.complete_version
-    assert_equal "3.0", ua.version
+    assert_equal "3.0.5", ua.version.full
+    assert_equal "3.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -175,10 +177,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.9.0.5", ua.render_engine_version
+    assert_equal "1.9.0.5", ua.render_engine_version.full
     assert_equal :firefox, ua.name
-    assert_equal "3.0.5", ua.complete_version
-    assert_equal "3.0", ua.version
+    assert_equal "3.0.5", ua.version.full
+    assert_equal "3.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -198,10 +200,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.9.0.5", ua.render_engine_version
+    assert_equal "1.9.0.5", ua.render_engine_version.full
     assert_equal :firefox, ua.name
-    assert_equal "3.0.5", ua.complete_version
-    assert_equal "3.0", ua.version
+    assert_equal "3.0.5", ua.version.full
+    assert_equal "3.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -221,10 +223,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.8.1.17", ua.render_engine_version
+    assert_equal "1.8.1.17", ua.render_engine_version.full
     assert_equal :flock, ua.name
-    assert_equal "1.2.6", ua.complete_version
-    assert_equal "1.2", ua.version
+    assert_equal "1.2.6", ua.version.full
+    assert_equal "1.2", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -244,10 +246,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.9.0.4", ua.render_engine_version
+    assert_equal "1.9.0.4", ua.render_engine_version.full
     assert_equal :flock, ua.name
-    assert_equal "2.0.2", ua.complete_version
-    assert_equal "2.0", ua.version
+    assert_equal "2.0.2", ua.version.full
+    assert_equal "2.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -267,10 +269,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.9a7", ua.render_engine_version
+    assert_equal "1.9a7", ua.render_engine_version.full
     assert_equal :granparadiso, ua.name
-    assert_equal "3.0a7", ua.complete_version
-    assert_equal "3.0a", ua.version
+    assert_equal "3.0a7", ua.version.full
+    assert_equal "3.0a", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -290,10 +292,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.8.1.8", ua.render_engine_version
+    assert_equal "1.8.1.8", ua.render_engine_version.full
     assert_equal :"k-meleon", ua.name
-    assert_equal "1.5", ua.complete_version
-    assert_equal "1.5", ua.version
+    assert_equal "1.5", ua.version.full
+    assert_equal "1.5", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -313,10 +315,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.8.1.8", ua.render_engine_version
+    assert_equal "1.8.1.8", ua.render_engine_version.full
     assert_equal :"k-meleon", ua.name
-    assert_equal "1.5", ua.complete_version
-    assert_equal "1.5", ua.version
+    assert_equal "1.5", ua.version.full
+    assert_equal "1.5", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -336,10 +338,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.9.1b2pre", ua.render_engine_version
+    assert_equal "1.9.1b2pre", ua.render_engine_version.full
     assert_equal :minefield, ua.name
-    assert_equal "3.1b2pre", ua.complete_version
-    assert_equal "3.1b", ua.version
+    assert_equal "3.1b2pre", ua.version.full
+    assert_equal "3.1b", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -359,10 +361,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.8.1.8pre", ua.render_engine_version
+    assert_equal "1.8.1.8pre", ua.render_engine_version.full
     assert_equal :navigator, ua.name
-    assert_equal "9.0.0.1", ua.complete_version
-    assert_equal "9", ua.version
+    assert_equal "9.0.0.1", ua.version.full
+    assert_equal "9", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -382,10 +384,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "0.9.2", ua.render_engine_version
+    assert_equal "0.9.2", ua.render_engine_version.full
     assert_equal :netscape, ua.name
-    assert_equal "6.1", ua.complete_version
-    assert_equal "6.1", ua.version
+    assert_equal "6.1", ua.version.full
+    assert_equal "6.1", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -405,10 +407,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.0.2", ua.render_engine_version
+    assert_equal "1.0.2", ua.render_engine_version.full
     assert_equal :netscape, ua.name
-    assert_equal "7.02", ua.complete_version
-    assert_equal "7.0", ua.version
+    assert_equal "7.02", ua.version.full
+    assert_equal "7.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -428,10 +430,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.7.5", ua.render_engine_version
+    assert_equal "1.7.5", ua.render_engine_version.full
     assert_equal :netscape, ua.name
-    assert_equal "8.1", ua.complete_version
-    assert_equal "8.1", ua.version
+    assert_equal "8.1", ua.version.full
+    assert_equal "8.1", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -451,10 +453,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.8.1.13", ua.render_engine_version
+    assert_equal "1.8.1.13", ua.render_engine_version.full
     assert_equal :seamonkey, ua.name
-    assert_equal "1.1.9", ua.complete_version
-    assert_equal "1.1", ua.version
+    assert_equal "1.1.9", ua.version.full
+    assert_equal "1.1", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
@@ -474,10 +476,10 @@ class GeckoTest < Test::Unit::TestCase
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.9.2a1pre", ua.render_engine_version
+    assert_equal "1.9.2a1pre", ua.render_engine_version.full
     assert_equal :seamonkey, ua.name
-    assert_equal "2.0a3pre", ua.complete_version
-    assert_equal "2.0a", ua.version
+    assert_equal "2.0a3pre", ua.version.full
+    assert_equal "2.0a", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
