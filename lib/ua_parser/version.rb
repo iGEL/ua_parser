@@ -15,8 +15,8 @@ module UaParser
     def initialize(version, name = nil)
       version = version.to_s if version.is_a?(Integer) || version.is_a?(Float)
       raise TypeError, "version must be a String, Integer or Float, but was a #{version.class}" unless version.is_a?(String)
-      @tokens = version.split(/(\.|[a-z]+)/)
-      @tokens.delete_if { |t| t == "." }
+      @tokens = version.split(/(\.|_|[a-z]+)/)
+      @tokens.delete_if { |t| t == "." || t == "_" }
       insert_zeros_before = []
       @tokens.each_index do |i|
         if @tokens[i] =~ /\A[0-9]+\Z/

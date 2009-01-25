@@ -83,6 +83,11 @@ class VersionTest < Test::Unit::TestCase
     assert_equal "1.0", v.full
   end
 
+  def test_java_version
+    v = Version.new("1.6.0_03")
+    assert_equal [1, 6, 0, 0, 3], v.send(:tokens)
+  end
+
   def test_major_1
     v = Version.new "1"
     assert_equal "1", v.major
