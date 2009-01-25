@@ -7,9 +7,7 @@ module UaParser
     def initialize(ua_string)
       @ua_string = ua_string.strip.downcase
       @known = false
-      @bot = false
-      @feed_reader = false
-      @other = false
+      @type = :browser
       @name = "Unknown browser"
       @urls = []
       @emails = []
@@ -27,7 +25,7 @@ module UaParser
       if match
         @known = true
         @name = match[1].to_sym
-        @bot = true
+        @type = :bot
         @urls << match[4]
         @version = match[3]
       end
@@ -37,7 +35,7 @@ module UaParser
         if match
           @known = true
           @name = match[1].to_sym
-          @bot = true
+          @type = :bot
           @urls << match[3]
           @version = match[2]
         end
@@ -48,7 +46,7 @@ module UaParser
         if match
           @known = true
           @name = match[1].to_sym
-          @bot = true
+          @type = :bot
           @urls << match[4]
           @version = match[3]
         end
@@ -143,7 +141,13 @@ module UaParser
           ua_info = match[1].split(/;\s?/) + match[4].split(/\s/)
         end
       end
+
 =begin
+Disabled, since we cannot identify the browser versions. If you know a table
+with all released versions of safari with the used webkit versions, please
+report it!
+
+
     # Identify Safari < version 3
     unless @known
       match = /\Amozilla\/5\.0 \((.+)\) applewebkit\/([^ ]+) \(khtml, like gecko\) safari\/([^ ]+)(.*)\Z/.match(@ua_string)
@@ -157,6 +161,7 @@ module UaParser
       end
     end
 =end
+
       # Identify now Operas, which do not try to pretend another browser
       unless @known
         match = /\Aopera\/([0-9]+\.[0-9]+) \(([^)]+)\) ?(presto\/([0-9.]+))?(.*)\Z/.match(@ua_string)
@@ -167,6 +172,82 @@ module UaParser
           @render_engine = :presto
           @render_engine_version = match[4]
           ua_info = match[2].split(/;\s?/) + match[5].split(/\s/)
+        end
+      end
+
+      # Identify rarely used agents
+      unless @known
+        match = /veoh-\\xe2\\xb8\\xb3\\xe2\\xb8\\xb40 service \([^)]\)/.match(@ua_string)
+        if match
+          @known = true
+          @name = :veoh_service
+          @type = :other
+          ua_info = match[1].split(/;\s?/)
+        end
+
+        # Identfity tortoise svn
+        unless @known
+          match = /\Asvn\/[^ ]+ \(r[0-9]+\)\/tortoisesvn-([^ ]+)/.match(@ua_string)
+          if match
+            @known = true
+            @name = :tortoisesvn
+            @type = :other
+            @version = match[1]
+          end
+        end
+
+        # Identify other http agents
+        unless @known
+          match = /\Asvn\/([^ ]+) \(r[0-9]+\)/.match(@ua_string)
+          if match
+            @known = true
+            @name = :svn_client
+            @type = :other
+            @version = match[1]
+          end
+        end
+
+        # Identify libwww-perl
+        unless @known
+          match = /\Alibwww-perl\/([^ ]+)\Z/.match(@ua_string)
+          if match
+            @known = true
+            @type = :other
+            @name = :"libwww-perl"
+            @version = match[1]
+          end
+        end
+
+        # Identify Jakarta Commons HttpClient libary
+        unless @known
+          match = /\Ajakarta commons-httpclient\/([^ ]+)\Z/.match(@ua_string)
+          if match
+            @known = true
+            @type = :other
+            @name = :jakarta_commons_httpclient
+            @version = match[1]
+          end
+        end
+
+        unless @known
+          match = /\Ajava\/([^ ])\Z/.match(@ua_string)
+          if match
+            @known = true
+            @type = :other
+            @name = :java
+            @version = match[1]
+          end
+        end
+        
+        # Identify connections from the Apache httpd.
+        unless @known
+          match = /\Aapache\/([^ ]+)/.match(@ua_string)
+          if match
+            @known = true
+            @name = :apache_httpd
+            @version = match[1]
+            @type = :other
+          end
         end
       end
 
@@ -187,14 +268,14 @@ module UaParser
   
     # Returns true, if the user agent is suspected or known to be a bot.
     def bot?
-      @bot
+      @type == :bot
     end
 
     # Returns true, if the user agent is known or suspected to be a browser.
-    # Completely unknown user agents are also suspected browsers. Check known?, if
-    # you want to make sure the browser is known.
+    # Completely unknown user agents are also suspected browsers. Check known?,
+    # if you want to make sure the browser is known.
     def browser?
-      !@bot && !@feed_reader && !@other
+      @type == :browser
     end
 
     # Returns an Array of all available .NET-Versions.
@@ -219,7 +300,13 @@ module UaParser
     # Returns true, if the given user agent is suspected or known to be a feed
     # reader.
     def feed_reader?
-      @feed_reader
+      @type == :feed_reader
+    end
+
+    # Returns true, if the user agent is a tool to grab the contents of a
+    # webpage like wget
+    def grapper?
+      @type == :grabber
     end
 
     # Returns true, if the given user agent is know, otherwise false
@@ -253,9 +340,9 @@ module UaParser
     end
 
     # Returns true, if the user agent is neighter a browser, bot or feed reader.
-    # Examples: SVN Client, Apache-Browser
+    # Examples: SVN Client, Apache-Browser, libaries like libwww-perl
     def other?
-      @other
+      @type == :other
     end
 
     # Returns the name of the render engine as a string if known, otherwise nil.
@@ -269,6 +356,13 @@ module UaParser
       return nil if @render_engine_version.nil?
       @render_engine_version_object = Version.new(@render_engine_version, @render_engine) if @render_engine_version_object.nil?
       @render_engine_version_object
+    end
+
+    # Returns the type of the user agent as a Symbol. Returns :browser, if the
+    # user agent coundn't be recognized, since this seems the savest choice. Use
+    # #known? if you want to know, if the user agent could be recognized.
+    def type
+      @type
     end
 
     # Returns the user interface language as a symbol like :en or :de. Returns nil
