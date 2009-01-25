@@ -5,21 +5,46 @@ crawlers by the provided user agent string. I'm planning try to get most of
 the available information like GUI language of the browser or email addresses
 provided by a bot out of it.
 
-=== Project status (as of 2009-01-21):
+I tried to identify common user agents first, reducing the necessary regexps for
+them. But I guess, it could be improved alot. Of course I'd like to get feedback.
+Even if you just revise my crappy English, send me an e-mail. ;-)
+
+=== Project status (as of 2009-01-25):
 
 Right know, the project is at a very early state. Of my 14 million hits sample,
-ua_parser can identify about 85 % of all hits.
+ua_parser can identify about 96.5 % of all hits.
+
+I tried to cover as much as possible with tests. At the moment, I have 99 tests
+implemented.
 
 Known browsers:
-* Internet Explorer
+* Chrome
 * Firefox and most other gecko based browsers
+* Internet Explorer
 * Opera, pure and pretending to be an Internet Explorer or Firefox
 * Safari >= Version 3
-* Chrome
 
 Known bots:
-* Googlebot
-* Yahoo! Slurp
 * Baidubot
+* gigabot
+* gonzo (of suchen.de)
+* Googlebot, Googlebot-Images, Mediapartners-Google
+* mj12bot
 * msnbot and msnbot-media
+* seekbot
+* speedy spider
 * twiceler (of cuil.com)
+* Yahoo! Slurp
+* yeti (of naver.com)
+
+Other known agents
+* Apache httpd
+* Jakarta Commons httpclient
+* Java
+* libwww-perl
+* SVN
+* TortoiseSVN
+* veoh service
+
+Also, ua_parser tries to identify bots and feedreader, even if it doesn't know
+about them. That way, the results should be close to 100%.
