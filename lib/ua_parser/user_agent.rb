@@ -12,6 +12,7 @@ module UaParser
       @urls = []
       @emails = []
       @dot_net_versions = []
+      @regexps = 0
 
       if @ua_string == "" || @ua_string == "-"
         @name = :no_agent_given
@@ -20,72 +21,10 @@ module UaParser
 
       ua_info = []
 
-      # First we identify bots
-      match = /^mozilla\/5.0 \(compatible; (googlebot|yahoo! slurp)(\/([^)]+))?; \+?(http:\/\/[^)]+)\)$/.match(@ua_string)
-      if match
-        @known = true
-        @name = match[1].to_sym
-        @type = :bot
-        @urls << match[4]
-        @version = match[3]
-      end
-    
-      unless @known
-        match = /^mozilla\/5.0 \((twiceler)-([^ ]+) \+?(http:\/\/[^)]+)\)$/.match(@ua_string)
-        if match
-          @known = true
-          @name = match[1].to_sym
-          @type = :bot
-          @urls << match[3]
-          @version = match[2]
-        end
-      end
-
-      unless @known
-        match = /\A(baiduspider|gigabot|msnbot|msnbot-media|seekbot|speedy spider|yeti)(\/([^+ ]+))?[ +]\(.*(http:\/\/[^)]+)\)/.match(@ua_string)
-        if match
-          @known = true
-          @name = match[1].to_sym
-          @type = :bot
-          @urls << match[4]
-          @version = match[3]
-        end
-      end
-
-      unless @known
-        match = /\A(mediapartners-google|googlebot-image)(\/([^ ]+))?\Z/.match(@ua_string)
-        if match
-          @known = true
-          @name = match[1].to_sym
-          @type = :bot
-          @version = match[3]
-        end
-      end
-
-      unless @known
-        match = /\Agonzo([0-9]+)\[P\] \+([^ ]+)\Z/.match(@ua_string)
-        if match
-          @known = true
-          @name = :gonzo
-          @type = :bot
-          @version = match[1]
-        end
-      end
-
-      unless @known
-        match = /\Ayeti\/([^ ]+) \(nhn\/1noon, yetibot@naver.com, check robots.txt daily and follow it\)\Z/.match(@ua_string)
-        if match
-          @known = true
-          @name = :yeti
-          @type = :bot
-          @emails << "yetibot@naver.com"
-          @version = match[1]
-        end
-      end
-
       # Identify Operas pretending to be an Internet Explorer
       unless @known
         match = /^mozilla\/4\.0 \(compatible; msie [4-6].0;(.*)\) opera ([0-9]+\.[0-9]+)(.*)$/.match(@ua_string)
+        @regexps += 1
         if match
           @known = true
           @name = :opera
@@ -98,6 +37,7 @@ module UaParser
       # Identify Internet Explorers
       unless @known
         match = /^mozilla\/4.0 \(compatible; msie ([0-9]\.[0-9]); ([^)]+)\)(.*)$/.match(@ua_string)
+        @regexps += 1
         if match
           @known = true
           @name = :internet_explorer
@@ -110,6 +50,7 @@ module UaParser
       # Identify Opera pretending to be a Firefox
       unless @known
         match = /\Amozilla\/5.0 \((.+) rv:[0-9.]+\) gecko\/[0-9]+ firefox\/[0-9.]+ opera ([0-9]+\.[0-9]+)(.*)\Z/.match(@ua_string)
+        @regexps += 1
         if match
           @known = true
           @name = :opera
@@ -123,7 +64,8 @@ module UaParser
       # also as a Firefox, so we have to identify them first.
       unless @known
         match = /^mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]* firefox\/[^ ]+ (flock|navigator)\/([^ ]+)(.*)$/.match(@ua_string)
-        if !@known && match
+        @regexps += 1
+        if match
           @known = true
           @name = match[3].to_sym
           @render_engine = :gecko
@@ -135,8 +77,9 @@ module UaParser
 
       # Identify all other gecko based browsers except the orginal mozilla
       unless @known
-        match = /^mozilla\/5\.0 \(([^)]+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]*( [^ ]+)?( \([^)]+\))? (bonecho|camino|epiphany|firefox|granparadiso|iceweasel|k-meleon|minefield|netscape6?|phoenix|seamonkey|songbird|thunderbird)\/([^ ]+)(.*)$/.match(@ua_string)
-        if !@known && match
+        match = /\Amozilla\/5\.0 \((.+); rv:([^; )]+)\) gecko\/20[0-2][0-9][01][0-9][0-3][0-9][0-9]*( [^ ]+)?( \([^)]+\))? (bonecho|camino|epiphany|firefox|granparadiso|iceweasel|k-meleon|minefield|netscape6?|phoenix|seamonkey|songbird|thunderbird)\/([^ ]+)(.*)\Z/.match(@ua_string)
+        @regexps += 1
+        if match
           @known = true
           @name = match[5].to_sym
           @name = :netscape if @name == :netscape6
@@ -147,9 +90,47 @@ module UaParser
         end
       end
 
+      # Identify the Googlebot, mj12bot and yahoo slurp
+      unless @known
+        match = /^mozilla\/5.0 \(compatible; (googlebot|mj12bot|yahoo! slurp)(\/v?([^)]+))?; \+?(http:\/\/[^)]+)\)$/.match(@ua_string)
+        @regexps += 1
+        if match
+          @known = true
+          @name = match[1].to_sym
+          @type = :bot
+          @urls << match[4]
+          @version = match[3]
+        end
+      end
+
+      # Identify the baiduspider, gigabot, mnsbot, msnbot-media, seekbot, speedy spider and naver yeti > 1.0
+      unless @known
+        match = /\A(baiduspider|gigabot|msnbot|msnbot-media|seekbot|speedy spider|yeti)(\/([^+ ]+))?[ +]\(.*(http:\/\/[^)]+)\)/.match(@ua_string)
+        @regexps += 1
+        if match
+          @known = true
+          @name = match[1].to_sym
+          @type = :bot
+          @urls << match[4]
+          @version = match[3]
+        end
+      end
+
+      unless @known
+        match = /\A(mediapartners-google|googlebot-image)(\/([^ ]+))?\Z/.match(@ua_string)
+        @regexps += 1
+        if match
+          @known = true
+          @name = match[1].to_sym
+          @type = :bot
+          @version = match[3]
+        end
+      end
+
       # Identify Chrome
       unless @known
         match = /\Amozilla\/5\.0 \(([^)]+)\) applewebkit\/([0-9]+\.[0-9]+) \(khtml, like gecko\) chrome\/([0-9.]+) safari\/[0-9]+\.[0-9]+(.*)\Z/.match(@ua_string)
+        @regexps += 1
         if match
           @known = true
           @name = :chrome
@@ -163,6 +144,7 @@ module UaParser
       # Identify Safari >= bersion 3
       unless @known
         match = /\Amozilla\/5.0 \(([^)]+)\) applewebkit\/([^ ]+) \(khtml, like gecko\) version\/([^ ]+) safari\/[0-9]+\.[0-9]+(.*)\Z/.match(@ua_string)
+        @regexps += 1
         if match
           @known = true
           @name = :safari
@@ -173,6 +155,44 @@ module UaParser
         end
       end
 
+      # Identify twiceler (of cuil)
+      unless @known
+        match = /^mozilla\/5.0 \((twiceler)-([^ ]+) \+?(http:\/\/[^)]+)\)$/.match(@ua_string)
+        @regexps += 1
+        if match
+          @known = true
+          @name = match[1].to_sym
+          @type = :bot
+          @urls << match[3]
+          @version = match[2]
+        end
+      end
+
+      # Identify gonzo (of suchen.de)
+      unless @known
+        match = /\Agonzo([0-9]+)\[[a-z]\] \+([^ ]+)\Z/.match(@ua_string)
+        @regexps += 1
+        if match
+          @known = true
+          @name = :gonzo
+          @type = :bot
+          @version = match[1]
+          @urls << match[2]
+        end
+      end
+
+      # Identify the yeti 0.01
+      unless @known
+        match = /\Ayeti\/([^ ]+) \(nhn\/1noon, yetibot@naver.com, check robots.txt daily and follow it\)\Z/.match(@ua_string)
+        @regexps += 1
+        if match
+          @known = true
+          @name = :yeti
+          @type = :bot
+          @emails << "yetibot@naver.com"
+          @version = match[1]
+        end
+      end
 =begin
 Disabled, since we cannot identify the browser versions. If you know a table
 with all released versions of safari with the used webkit versions, please
@@ -182,7 +202,8 @@ report it!
     # Identify Safari < version 3
     unless @known
       match = /\Amozilla\/5\.0 \((.+)\) applewebkit\/([^ ]+) \(khtml, like gecko\) safari\/([^ ]+)(.*)\Z/.match(@ua_string)
-      if match
+      @regexps += 1
+        if match
         @known = true
         @name = :safari
         @render_engine = :webkit
@@ -196,6 +217,7 @@ report it!
       # Identify now Operas, which do not try to pretend another browser
       unless @known
         match = /\Aopera\/([0-9]+\.[0-9]+) \(([^)]+)\) ?(presto\/([0-9.]+))?(.*)\Z/.match(@ua_string)
+        @regexps += 1
         if match
           @known = true
           @name = :opera
@@ -209,6 +231,7 @@ report it!
       # Identify rarely used agents
       unless @known
         match = /veoh-\\xe2\\xb8\\xb3\\xe2\\xb8\\xb40 service \([^)]\)/.match(@ua_string)
+        @regexps += 1
         if match
           @known = true
           @name = :veoh_service
@@ -219,6 +242,7 @@ report it!
         # Identfity tortoise svn
         unless @known
           match = /\Asvn\/[^ ]+ \(r[0-9]+\)\/tortoisesvn-([^ ]+)/.match(@ua_string)
+          @regexps += 1
           if match
             @known = true
             @name = :tortoisesvn
@@ -230,6 +254,7 @@ report it!
         # Identify other http agents
         unless @known
           match = /\Asvn\/([^ ]+) \(r[0-9]+\)/.match(@ua_string)
+          @regexps += 1
           if match
             @known = true
             @name = :svn_client
@@ -241,6 +266,7 @@ report it!
         # Identify libwww-perl
         unless @known
           match = /\Alibwww-perl\/([^ ]+)\Z/.match(@ua_string)
+          @regexps += 1
           if match
             @known = true
             @type = :other
@@ -252,6 +278,7 @@ report it!
         # Identify Jakarta Commons HttpClient libary
         unless @known
           match = /\Ajakarta commons-httpclient\/([^ ]+)\Z/.match(@ua_string)
+          @regexps += 1
           if match
             @known = true
             @type = :other
@@ -262,6 +289,7 @@ report it!
 
         unless @known
           match = /\Ajava\/([^ ]+)\Z/.match(@ua_string)
+          @regexps += 1
           if match
             @known = true
             @type = :other
@@ -273,6 +301,7 @@ report it!
         # Identify connections from the Apache httpd.
         unless @known
           match = /\Aapache\/([^ ]+)/.match(@ua_string)
+          @regexps += 1
           if match
             @known = true
             @name = :apache_httpd
@@ -286,6 +315,7 @@ report it!
         if @render_engine == :trident
           ua_info.each do |info|
             match = /trident\/(.+)/.match(info)
+            @regexps += 1
             @render_engine_version = match[1] if match
           end
         end
@@ -294,9 +324,11 @@ report it!
       # Still not known? Try to guess
       unless @known
         if @ua_string =~ /bot|spider|crawler/
+          @regexps += 1
           @type = :bot
           @name = :unknown_bot
         elsif @ua_string =~ /feed|rss|atom/
+          @regexps += 2
           @type = :feed_reader
           @name = :unknown_feed_reader
         end
@@ -387,6 +419,12 @@ report it!
     # Examples: SVN Client, Apache-Browser, libaries like libwww-perl
     def other?
       @type == :other
+    end
+
+    # Returns the number of regexps, which were executed to identify this agent.
+    # Regexps for identifications of versions are not counted.
+    def regexps
+      @regexps
     end
 
     # Returns the name of the render engine as a string if known, otherwise nil.

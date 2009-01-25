@@ -6,7 +6,7 @@ require 'ua_parser'
 class GeckoTest < Test::Unit::TestCase
   include UaParser
   
-  def test_bon_echo_20a3_win_xp
+  def test_bon_echo_2_0_a3_win_xp
     ua = UserAgent.new "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1a3) Gecko/20060526 BonEcho/2.0a3"
     assert ua.known?
     assert ua.browser?
@@ -30,18 +30,18 @@ class GeckoTest < Test::Unit::TestCase
     end
   end
 
-  def test_bon_echo_20a3_win_xp
-    ua = UserAgent.new "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1a3) Gecko/20060526 BonEcho/2.0a3"
+  def test_bon_echo_2_0_0_4_linux_x86_64
+    ua = UserAgent.new "Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.8.1.4) Gecko/20080721 BonEcho/2.0.0.4"
     assert ua.known?
     assert ua.browser?
     assert !ua.bot?
     assert !ua.feed_reader?
     assert !ua.other?
     assert_equal :gecko, ua.render_engine
-    assert_equal "1.8.1a3", ua.render_engine_version.full
+    assert_equal "1.8.1.4", ua.render_engine_version.full
     assert_equal :bonecho, ua.name
-    assert_equal "2.0a3", ua.version.full
-    assert_equal "2.0a", ua.version.major
+    assert_equal "2.0.0.4", ua.version.full
+    assert_equal "2.0", ua.version.major
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
