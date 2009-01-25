@@ -8,13 +8,13 @@ module UaParser
       @ua_string = ua_string.strip.downcase
       @known = false
       @type = :browser
-      @name = "Unknown browser"
+      @name = :unknown_browser
       @urls = []
       @emails = []
       @dot_net_versions = []
 
       if @ua_string == "" || @ua_string == "-"
-        @name = "No user agent given"
+        @name = :no_agent_given
         return
       end
 
@@ -42,13 +42,44 @@ module UaParser
       end
 
       unless @known
-        match = /^(msnbot|msnbot-media|baiduspider)(\/([^+ ]+))?[ +]\(\+(http:\/\/[^)]+)\)$/.match(@ua_string)
+        match = /\A(baiduspider|gigabot|msnbot|msnbot-media|seekbot|speedy spider|yeti)(\/([^+ ]+))?[ +]\(.*(http:\/\/[^)]+)\)/.match(@ua_string)
         if match
           @known = true
           @name = match[1].to_sym
           @type = :bot
           @urls << match[4]
           @version = match[3]
+        end
+      end
+
+      unless @known
+        match = /\A(mediapartners-google|googlebot-image)(\/([^ ]+))?\Z/.match(@ua_string)
+        if match
+          @known = true
+          @name = match[1].to_sym
+          @type = :bot
+          @version = match[3]
+        end
+      end
+
+      unless @known
+        match = /\Agonzo([0-9]+)\[P\] \+([^ ]+)\Z/.match(@ua_string)
+        if match
+          @known = true
+          @name = :gonzo
+          @type = :bot
+          @version = match[1]
+        end
+      end
+
+      unless @known
+        match = /\Ayeti\/([^ ]+) \(nhn\/1noon, yetibot@naver.com, check robots.txt daily and follow it\)\Z/.match(@ua_string)
+        if match
+          @known = true
+          @name = :yeti
+          @type = :bot
+          @emails << "yetibot@naver.com"
+          @version = match[1]
         end
       end
 
@@ -230,7 +261,7 @@ report it!
         end
 
         unless @known
-          match = /\Ajava\/([^ ])\Z/.match(@ua_string)
+          match = /\Ajava\/([^ ]+)\Z/.match(@ua_string)
           if match
             @known = true
             @type = :other
@@ -258,6 +289,19 @@ report it!
             @render_engine_version = match[1] if match
           end
         end
+      end
+
+      # Still not known? Try to guess
+      unless @known
+        if @ua_string =~ /bot|spider|crawler/
+          @type = :bot
+          @name = :unknown_bot
+        elsif @ua_string =~ /feed|rss|atom/
+          @type = :feed_reader
+          @name = :unknown_feed_reader
+        end
+        @urls = @ua_string.scan(/(((f|ht)tps?:\/\/|www\.)[a-z0-9.-]+(:[0-9]+)?(\/([a-z0-9.\-_+\/%?=;,&]*[a-z0-9.\-_+\/%?=,&])?)?)/).collect { |url| url.first }
+        @emails = @ua_string.scan(/([0-9a-z]([0-9a-z_\-.]*[0-9a-z])?@[0-9a-z.-]+)/).collect { |mail| mail.first}
       end
     end
 

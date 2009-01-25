@@ -28,7 +28,53 @@ class CrawlerTest < Test::Unit::TestCase
     end
   end
 
-  def test_googlebot_21
+  def test_cuil_twiceler_0_9
+    ua = UserAgent.new "Mozilla/5.0 (Twiceler-0.9 http://www.cuil.com/twiceler/robot.html)"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :"twiceler", ua.name
+    assert_equal "0.9", ua.version.full
+    assert_equal "0.9", ua.version.major
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal ["http://www.cuil.com/twiceler/robot.html"], ua.urls
+    assert_equal "http://www.cuil.com/twiceler/robot.html", ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_cuil_0_9_twiceler_wrong_domain
+    ua = UserAgent.new "Mozilla/5.0 (Twiceler-0.9 http://www.cuill.com/twiceler/robot.html)"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :"twiceler", ua.name
+    assert_equal "0.9", ua.version.major
+    assert_equal "0.9", ua.version.full
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal ["http://www.cuill.com/twiceler/robot.html"], ua.urls
+    assert_equal "http://www.cuill.com/twiceler/robot.html", ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_googlebot_2_1
     ua = UserAgent.new "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
     assert ua.known?
     assert ua.bot?
@@ -44,6 +90,97 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal ["http://www.google.com/bot.html"], ua.urls
     assert_equal "http://www.google.com/bot.html", ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_gigabot_3_0
+    ua = UserAgent.new "Gigabot/3.0 (http://www.gigablast.com/spider.html)"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :gigabot, ua.name
+    assert_equal "3.0", ua.version.full
+    assert_equal "3.0", ua.version.major
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal ["http://www.gigablast.com/spider.html"], ua.urls
+    assert_equal "http://www.gigablast.com/spider.html", ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_googlebot_image_1_0
+    ua = UserAgent.new "Googlebot-Image/1.0"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :"googlebot-image", ua.name
+    assert_equal "1.0", ua.version.full
+    assert_equal "1.0", ua.version.major
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal [], ua.urls
+    assert_equal nil, ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_mediapartners_google
+    ua = UserAgent.new "Mediapartners-Google"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :"mediapartners-google", ua.name
+    assert_equal nil, ua.version
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal [], ua.urls
+    assert_equal nil, ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_mediapartners_google_21
+    ua = UserAgent.new "Mediapartners-Google/2.1"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :"mediapartners-google", ua.name
+    assert_equal "2.1", ua.version.full
+    assert_equal "2.1", ua.version.major
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal [], ua.urls
+    assert_equal nil, ua.url
     [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
@@ -143,8 +280,8 @@ class CrawlerTest < Test::Unit::TestCase
     end
   end
 
-  def test_cuil_twiceler_09
-    ua = UserAgent.new "Mozilla/5.0 (Twiceler-0.9 http://www.cuil.com/twiceler/robot.html)"
+  def test_seekbot_1_0
+    ua = UserAgent.new "Seekbot/1.0 (http://www.seekbot.net/bot.html) HTTPFetcher/2.2"
     assert ua.known?
     assert ua.bot?
     assert !ua.browser?
@@ -152,13 +289,13 @@ class CrawlerTest < Test::Unit::TestCase
     assert !ua.other?
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
-    assert_equal :"twiceler", ua.name
-    assert_equal "0.9", ua.version.full
-    assert_equal "0.9", ua.version.major
+    assert_equal :seekbot, ua.name
+    assert_equal "1.0", ua.version.major
+    assert_equal "1.0", ua.version.full
     assert_equal [], ua.emails
     assert_equal nil, ua.email
-    assert_equal ["http://www.cuil.com/twiceler/robot.html"], ua.urls
-    assert_equal "http://www.cuil.com/twiceler/robot.html", ua.url
+    assert_equal ["http://www.seekbot.net/bot.html"], ua.urls
+    assert_equal "http://www.seekbot.net/bot.html", ua.url
     [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
@@ -166,8 +303,8 @@ class CrawlerTest < Test::Unit::TestCase
     end
   end
 
-  def test_cuil_09_twiceler_wrong_domain
-    ua = UserAgent.new "Mozilla/5.0 (Twiceler-0.9 http://www.cuill.com/twiceler/robot.html)"
+  def test_speedy_spider
+    ua = UserAgent.new "Speedy Spider (http://www.entireweb.com/about/search_tech/speedy_spider/)"
     assert ua.known?
     assert ua.bot?
     assert !ua.browser?
@@ -175,13 +312,122 @@ class CrawlerTest < Test::Unit::TestCase
     assert !ua.other?
     assert_equal nil, ua.render_engine
     assert_equal nil, ua.render_engine_version
-    assert_equal :"twiceler", ua.name
-    assert_equal "0.9", ua.version.major
-    assert_equal "0.9", ua.version.full
+    assert_equal :"speedy spider", ua.name
+    assert_equal nil, ua.version
     assert_equal [], ua.emails
     assert_equal nil, ua.email
-    assert_equal ["http://www.cuill.com/twiceler/robot.html"], ua.urls
-    assert_equal "http://www.cuill.com/twiceler/robot.html", ua.url
+    assert_equal ["http://www.entireweb.com/about/search_tech/speedy_spider/"], ua.urls
+    assert_equal "http://www.entireweb.com/about/search_tech/speedy_spider/", ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_unknown_bot
+    ua = UserAgent.new "iGELbot"
+    assert !ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :unknown_bot, ua.name
+    assert_equal nil, ua.version
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal [], ua.urls
+    assert_equal nil, ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_unknown_bot_with_emails
+    ua = UserAgent.new "iGELbot (a_sf-32@sub-dom3.x.de; +info@x.de"
+    assert !ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :unknown_bot, ua.name
+    assert_equal nil, ua.version
+    assert_equal ["a_sf-32@sub-dom3.x.de", "info@x.de"], ua.emails
+    assert_equal "a_sf-32@sub-dom3.x.de", ua.email
+    assert_equal [], ua.urls
+    assert_equal nil, ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_unknown_bot_with_urls
+    ua = UserAgent.new "iGELbot (+http://xa2.a-z.43x.com:93/afzde.php?if=asdf&rm=3;x=hello+r%C3%BCdiger; www.heise.de)"
+    assert !ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :unknown_bot, ua.name
+    assert_equal nil, ua.version
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal ["http://xa2.a-z.43x.com:93/afzde.php?if=asdf&rm=3;x=hello+r%c3%bcdiger", "www.heise.de"], ua.urls
+    assert_equal "http://xa2.a-z.43x.com:93/afzde.php?if=asdf&rm=3;x=hello+r%c3%bcdiger", ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_unknown_crawler
+    ua = UserAgent.new "iGELcrawler"
+    assert !ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :unknown_bot, ua.name
+    assert_equal nil, ua.version
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal [], ua.urls
+    assert_equal nil, ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_unknown_spider
+    ua = UserAgent.new "iGELspider"
+    assert !ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :unknown_bot, ua.name
+    assert_equal nil, ua.version
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal [], ua.urls
+    assert_equal nil, ua.url
     [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
@@ -211,7 +457,7 @@ class CrawlerTest < Test::Unit::TestCase
     end
   end
 
-  def test_yahoo_slurp_30
+  def test_yahoo_slurp_3_0
     ua = UserAgent.new "Mozilla/5.0 (compatible; Yahoo! Slurp/3.0; http://help.yahoo.com/help/us/ysearch/slurp)"
     assert ua.known?
     assert ua.bot?
@@ -227,6 +473,75 @@ class CrawlerTest < Test::Unit::TestCase
     assert_equal nil, ua.email
     assert_equal ["http://help.yahoo.com/help/us/ysearch/slurp"], ua.urls
     assert_equal "http://help.yahoo.com/help/us/ysearch/slurp", ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_yeti_0_01
+    ua = UserAgent.new "Yeti/0.01 (nhn/1noon, yetibot@naver.com, check robots.txt daily and follow it)"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :yeti, ua.name
+    assert_equal "0.01", ua.version.full
+    assert_equal "0.0", ua.version.major
+    assert_equal ["yetibot@naver.com"], ua.emails
+    assert_equal "yetibot@naver.com", ua.email
+    assert_equal [], ua.urls
+    assert_equal nil, ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_yeti_1_0
+    ua = UserAgent.new "Yeti/1.0 (+http://help.naver.com/robots/)"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :yeti, ua.name
+    assert_equal "1.0", ua.version.full
+    assert_equal "1.0", ua.version.major
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal ["http://help.naver.com/robots/"], ua.urls
+    assert_equal "http://help.naver.com/robots/", ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_yeti_1_0_with_company
+    ua = UserAgent.new "Yeti/1.0 (NHN Corp.; http://help.naver.com/robots/)"
+    assert ua.known?
+    assert ua.bot?
+    assert !ua.browser?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :yeti, ua.name
+    assert_equal "1.0", ua.version.full
+    assert_equal "1.0", ua.version.major
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal ["http://help.naver.com/robots/"], ua.urls
+    assert_equal "http://help.naver.com/robots/", ua.url
     [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
       assert_raise NotImplementedError do
         ua.method(method).call
