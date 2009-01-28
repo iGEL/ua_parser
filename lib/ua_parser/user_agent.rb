@@ -13,13 +13,12 @@ module UaParser
       @emails = []
       @dot_net_versions = []
       @regexps = 0
+      @details = []
 
       if @ua_string == "" || @ua_string == "-"
         @name = :no_agent_given
         return
       end
-
-      ua_info = []
 
       # Identify Operas pretending to be an Internet Explorer
       unless @known
@@ -30,7 +29,7 @@ module UaParser
           @name = :opera
           @render_engine = :presto
           @version = match[2]
-          ua_info = match[1].split(/;\s?/) + match[3].split(/\s/)
+          @details = match[1].split(/;\s?/) + match[3].split(/\s/)
         end
       end
 
@@ -43,7 +42,7 @@ module UaParser
           @name = :internet_explorer
           @render_engine = :trident
           @version = match[1]
-          ua_info = match[2].split(/;\s?/) + match[3].split(/\s/)
+          @details = match[2].split(/;\s?/) + match[3].split(/\s/)
         end
       end
 
@@ -56,7 +55,7 @@ module UaParser
           @name = :opera
           @render_engine = :presto
           @version = match[2]
-          ua_info = match[1].split(/;\s?/) + match[3].split(/\s/)
+          @details = match[1].split(/;\s?/) + match[3].split(/\s/)
         end
       end
 
@@ -69,7 +68,7 @@ module UaParser
           @known = true
           @name = match[3].to_sym
           @render_engine = :gecko
-          ua_info = match[1].split(/;\s?/) + match[5].split(/\s/)
+          @details = match[1].split(/;\s?/) + match[5].split(/\s/)
           @render_engine_version = match[2]
           @version = match[4]
         end
@@ -84,7 +83,7 @@ module UaParser
           @name = match[5].to_sym
           @name = :netscape if @name == :netscape6
           @render_engine = :gecko
-          ua_info = match[1].split(/;\s?/) + "#{match[3]} #{match[7]}".split(/\s/)
+          @details = match[1].split(/;\s?/) + "#{match[3]} #{match[7]}".split(/\s/)
           @render_engine_version = match[2]
           @version = match[6]
         end
@@ -137,7 +136,7 @@ module UaParser
           @render_engine = :webkit
           @render_engine_version = match[2]
           @version = match[3]
-          ua_info = match[1].split(/;\s?/) + match[4].split(/\s/)
+          @details = match[1].split(/;\s?/) + match[4].split(/\s/)
         end
       end
 
@@ -151,7 +150,7 @@ module UaParser
           @render_engine = :webkit
           @render_engine_version = match[2]
           @version = match[3]
-          ua_info = match[1].split(/;\s?/) + match[4].split(/\s/)
+          @details = match[1].split(/;\s?/) + match[4].split(/\s/)
         end
       end
 
@@ -224,7 +223,7 @@ report it!
           @version = match[1]
           @render_engine = :presto
           @render_engine_version = match[4]
-          ua_info = match[2].split(/;\s?/) + match[5].split(/\s/)
+          @details = match[2].split(/;\s?/) + match[5].split(/\s/)
         end
       end
 
@@ -236,7 +235,7 @@ report it!
           @known = true
           @name = :veoh_service
           @type = :other
-          ua_info = match[1].split(/;\s?/)
+          @details = match[1].split(/;\s?/)
         end
 
         # Identfity tortoise svn
@@ -307,16 +306,6 @@ report it!
             @name = :apache_httpd
             @version = match[1]
             @type = :other
-          end
-        end
-      end
-
-      if @known && !ua_info.empty?
-        if @render_engine == :trident
-          ua_info.each do |info|
-            match = /trident\/(.+)/.match(info)
-            @regexps += 1
-            @render_engine_version = match[1] if match
           end
         end
       end
@@ -435,6 +424,7 @@ report it!
     # Returns a UaParser::Version object with the version of the render engine
     # if known, otherwise nil
     def render_engine_version
+      parse_details if @render_engine == :trident
       return nil if @render_engine_version.nil?
       @render_engine_version_object = Version.new(@render_engine_version, @render_engine) if @render_engine_version_object.nil?
       @render_engine_version_object
@@ -483,6 +473,20 @@ report it!
       return nil if @version.nil?
       @version_object = Version.new(@version, @name) if @version_object.nil?
       @version_object
+    end
+
+    private
+    def parse_details
+      if !@details_parsed && !@details.empty?
+        if @render_engine == :trident
+          @details.each do |info|
+            match = /trident\/(.+)/.match(info)
+            @regexps += 1
+            @render_engine_version = match[1] if match
+          end
+        end
+        @details_parsed = true
+      end
     end
   end
 end
