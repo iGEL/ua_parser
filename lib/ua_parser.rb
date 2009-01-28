@@ -1,2 +1,2 @@
-require "lib/ua_parser/user_agent"
-require "lib/ua_parser/version"
+require "ua_parser/user_agent"
+require "ua_parser/version"

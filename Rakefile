@@ -7,6 +7,6 @@ Echoe.new('ua_parser', '0.0.1') do |p|
   p.url            = "http://github.com/iGEL/ua_parser"
   p.author         = "Johannes Barre"
   p.email          = "igel@igels.net"
-  p.ignore_pattern = ["tmp/*", "script/*"]
+  p.ignore_pattern = ["pkg/*", "logs/*", "output*", "nbproject/**", "nbproject/private/*"]
   p.development_dependencies = []
 end
