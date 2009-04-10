@@ -1,0 +1,15 @@
+Manifest
+README.rdoc
+Rakefile
+test/trident_test.rb
+test/webkit_test.rb
+test/gecko_test.rb
+test/other_test.rb
+test/version_test.rb
+test/crawler_test.rb
+test/presto_test.rb
+apache_log_tester.rb
+ua_parser.gemspec
+lib/ua_parser/version.rb
+lib/ua_parser/user_agent.rb
+lib/ua_parser.rb
