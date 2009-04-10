@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'echoe'
 
-Echoe.new('ua_parser', '0.0.1') do |p|
+Echoe.new('ua_parser', '0.0.2') do |p|
   p.description    = "Parses the user agent of browsers and bots."
   p.url            = "http://github.com/iGEL/ua_parser"
   p.author         = "Johannes Barre"

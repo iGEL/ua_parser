@@ -5,6 +5,7 @@ module UaParser
     # == Parameters
     # * ua_string: The user agent as you got it
     def initialize(ua_string)
+      ua_string = "" unless ua_string.is_a?(String)
       @ua_string = ua_string.strip.downcase
       @known = false
       @type = :browser

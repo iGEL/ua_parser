@@ -5,7 +5,7 @@ require 'ua_parser'
 
 class OtherTest < Test::Unit::TestCase
   include UaParser
-  
+
   def test_apache
     ua = UserAgent.new "Apache/2.2.8 (Ubuntu) DAV/2 SVN/1.4.6 mod_python/3.3.1 Python/2.5.2 PHP/5.2.4-2ubuntu5.3 with Suhosin-Patch mod_ssl/2.2.8 OpenSSL/0.9.8g (internal dummy connection)"
     assert ua.known?
@@ -87,6 +87,28 @@ class OtherTest < Test::Unit::TestCase
     assert_equal :"libwww-perl", ua.name
     assert_equal "5.805", ua.version.full
     assert_equal "5.805", ua.version.major
+    assert_equal [], ua.emails
+    assert_equal nil, ua.email
+    assert_equal [], ua.urls
+    assert_equal nil, ua.url
+    [:architecture, :dotnet_versions, :os, :os_type, :os_version, :ui_lang, :ui_lang_country, :vendor].each do |method|
+      assert_raise NotImplementedError do
+        ua.method(method).call
+      end
+    end
+  end
+
+  def test_nil
+    ua = UserAgent.new nil
+    assert !ua.known?
+    assert ua.browser?
+    assert !ua.bot?
+    assert !ua.feed_reader?
+    assert !ua.other?
+    assert_equal nil, ua.render_engine
+    assert_equal nil, ua.render_engine_version
+    assert_equal :no_agent_given, ua.name
+    assert_equal nil, ua.version
     assert_equal [], ua.emails
     assert_equal nil, ua.email
     assert_equal [], ua.urls
