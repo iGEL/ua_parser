@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Johannes Barre"]
-  s.date = %q{2009-04-11}
+  s.date = %q{2009-05-04}
   s.description = %q{Parses the user agent of browsers and bots.}
   s.email = %q{igel@igels.net}
   s.extra_rdoc_files = ["README.rdoc", "lib/ua_parser/version.rb", "lib/ua_parser/user_agent.rb", "lib/ua_parser.rb"]
@@ -16,13 +16,13 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Ua_parser", "--main", "README.rdoc"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{ua_parser}
-  s.rubygems_version = %q{1.3.1}
+  s.rubygems_version = %q{1.3.2}
   s.summary = %q{Parses the user agent of browsers and bots.}
   s.test_files = ["test/trident_test.rb", "test/webkit_test.rb", "test/gecko_test.rb", "test/other_test.rb", "test/version_test.rb", "test/crawler_test.rb", "test/presto_test.rb"]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 2
+    s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
     else
